@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://ck2c58key4r5s"]
+[gd_scene load_steps=6 format=3 uid="uid://ck2c58key4r5s"]
 
 [ext_resource type="Texture2D" uid="uid://dvw4w0b5w0sk6" path="res://sprites/time_gui.png" id="1_s1rui"]
 [ext_resource type="Script" uid="uid://cfowy081vh8ix" path="res://time_ui.gd" id="1_ymhmv"]
 [ext_resource type="LabelSettings" uid="uid://c7xcdxwgm2kec" path="res://styles/clockfont.tres" id="2_xi4ts"]
-[ext_resource type="Texture2D" uid="uid://cvsl3ty2hmwmj" path="res://sprites/buttons.png" id="4_erxgb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ymhmv"]
 atlas = ExtResource("1_s1rui")
@@ -144,20 +143,3 @@ texture = SubResource("AtlasTexture_xi4ts")
 
 [node name="Button control" type="Control" parent="."]
 anchors_preset = 0
-
-[node name="play_button" type="TextureButton" parent="Button control"]
-clip_contents = true
-layout_mode = 0
-offset_right = 147.0
-offset_bottom = 45.0
-texture_normal = ExtResource("4_erxgb")
-
-[node name="fast_forward__button" type="TextureButton" parent="Button control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="skip_button" type="TextureButton" parent="Button control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
