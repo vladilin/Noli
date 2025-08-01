@@ -1,0 +1,183 @@
+[gd_scene load_steps=10 format=3 uid="uid://cbh26n8hy8ks5"]
+
+[ext_resource type="Texture2D" uid="uid://bvvx0kbx2pwbm" path="res://sprites/BACKGROUND.png" id="1_2gn6w"]
+[ext_resource type="Script" uid="uid://bw7nawv5r1mn7" path="res://index.gd" id="1_ir7so"]
+[ext_resource type="Theme" uid="uid://bu4xhjy2de5lw" path="res://styles/new1.0.tres" id="2_3bfj3"]
+[ext_resource type="Script" uid="uid://cgmpk3cl1l8aw" path="res://time/time_system.gd" id="6_2fy20"]
+[ext_resource type="Script" uid="uid://b1vsapuleqnq3" path="res://time/date_time.gd" id="7_mvkpm"]
+[ext_resource type="PackedScene" uid="uid://ck2c58key4r5s" path="res://time_ui.tscn" id="8_mvkpm"]
+
+[sub_resource type="GDScript" id="GDScript_ir7so"]
+
+[sub_resource type="Resource" id="Resource_2fy20"]
+script = ExtResource("7_mvkpm")
+seconds = 0
+minutes = 0
+hours = 12
+days = 1
+metadata/_custom_type_script = "uid://b1vsapuleqnq3"
+
+[sub_resource type="GDScript" id="GDScript_d1yoc"]
+script/source = "extends Node
+class_name PatientManagerB
+
+var patients: Array[Patient] = []
+
+# Your Google Sheets export CSV URL
+const SHEET_URL = \"https://docs.google.com/spreadsheets/d/1FQYIbDn7SayINMZU5uttnsbu-3I69FUGhwkMh_9VPu4/export?format=csv\"
+
+@onready var http_request: HTTPRequest = $\"../HTTPRequest\"
+
+func _ready():
+	# Start the HTTP request for the online CSV
+	http_request.request(SHEET_URL)
+
+func _on_HTTPRequest_request_completed(result, response_code, headers, body):
+    if response_code == 200:
+        var csv_text = body.get_string_from_utf8()
+        print(\"Downloaded CSV:\\n\", csv_text)  # <--- Place it here
+        _parse_csv(csv_text)
+        print(\"Loaded %d patients from online sheet!\" % patients.size())
+    else:
+        print(\"Failed to download CSV:\", response_code)
+
+
+func _parse_csv(csv_text: String) -> void:
+	# Split lines, handle header, and parse fields
+	var lines = csv_text.split(\"\\n\", false)
+	if lines.size() < 2:
+		print(\"CSV missing header/data\")
+		return
+
+	var headers = lines[0].split(\",\", false)
+	for i in range(1, lines.size()):
+		var line = lines[i]
+		if line.strip_edges() == \"\":
+			continue
+		var fields = line.split(\",\", false)
+		if fields.size() != headers.size():
+			continue  # Skip rows with missing data
+
+		var row = {}
+		for j in range(headers.size()):
+			row[headers[j].strip_edges()] = fields[j].strip_edges()
+
+		# Clean up values as before
+		var spo2_str = row[\"SPO2\"].replace(\"%\", \"\")
+		var spo2 = float(spo2_str) if spo2_str != \"\" else 0.0
+		var resp = int(row[\"RESP\"]) if row[\"RESP\"].is_valid_int() else 0
+		var temp = float(row[\"Temp\"]) if row[\"Temp\"].is_valid_float() else 0.0
+
+		patients.append(Patient.new(
+			row[\"Name\"],
+			row[\"Abbr\"],
+			row[\"Disease\"],
+			row[\"TEXT\"],
+			int(row[\"AGE\"]),
+			row[\"SEX\"],
+			int(row[\"HR\"]),
+			row[\"BP\"],
+			spo2,
+			resp,
+			temp
+		))
+"
+
+[node name="game_ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ir7so")
+
+[node name="bg_green" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.313726, 0.203922, 1)
+
+[node name="bg_image" type="TextureRect" parent="bg_green"]
+layout_mode = 0
+offset_right = 1536.0
+offset_bottom = 1024.0
+theme = ExtResource("2_3bfj3")
+texture = ExtResource("1_2gn6w")
+
+[node name="Pt_profile" type="Panel" parent="bg_green"]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 31.0
+offset_right = 315.0
+offset_bottom = 71.0
+
+[node name="pt_list" type="VBoxContainer" parent="bg_green"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 27.0
+offset_top = 31.0
+offset_right = -1272.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Main_Buttons" type="VBoxContainer" parent="bg_green"]
+layout_mode = 0
+offset_left = 879.0
+offset_top = 50.0
+offset_right = 1136.0
+offset_bottom = 987.0
+script = SubResource("GDScript_ir7so")
+
+[node name="wait" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "wait"
+
+[node name="test" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "test"
+
+[node name="treat" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "treat"
+
+[node name="help" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "help"
+
+[node name="dx" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "dx"
+
+[node name="present" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "pres"
+
+[node name="TimeSystem" type="Node" parent="."]
+script = ExtResource("6_2fy20")
+date_time = SubResource("Resource_2fy20")
+metadata/_custom_type_script = "uid://cgmpk3cl1l8aw"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="timeGUI" parent="CanvasLayer" instance=ExtResource("8_mvkpm")]
+offset_left = 603.0
+offset_top = 33.0
+offset_right = -811.0
+offset_bottom = -782.0
+scale = Vector2(2.09201, 2.069)
+
+[node name="PatientManager" type="Node" parent="."]
+script = SubResource("GDScript_d1yoc")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="updated" from="TimeSystem" to="CanvasLayer/timeGUI" method="_on_time_system_updated"]
+[connection signal="request_completed" from="HTTPRequest" to="PatientManager" method="_on_http_request_request_completed"]

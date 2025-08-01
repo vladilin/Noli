@@ -1,0 +1,219 @@
+[gd_scene load_steps=8 format=3 uid="uid://cbh26n8hy8ks5"]
+
+[ext_resource type="Texture2D" uid="uid://bvvx0kbx2pwbm" path="res://sprites/BACKGROUND.png" id="1_2gn6w"]
+[ext_resource type="Script" uid="uid://bw7nawv5r1mn7" path="res://index.gd" id="1_ir7so"]
+[ext_resource type="Theme" uid="uid://bu4xhjy2de5lw" path="res://styles/new1.0.tres" id="2_3bfj3"]
+[ext_resource type="Texture2D" uid="uid://dnf8sex4pl6gu" path="res://art/facepic.png" id="2_mbj17"]
+[ext_resource type="Texture2D" uid="uid://cecdes3xpo374" path="res://art/AcuteCholey.png" id="4_ir7so"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d1yoc"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_ir7so"]
+script/source = "class_name time_sys extends Node
+
+@export var datetime: date_time
+
+func _ready():
+	if datetime == null:
+		datetime = date_time.new()   # always have a resource, even if not set in editor
+
+@export var ticks_pr_sec: int = 6
+
+func _process(delta: float) -> void:
+	datetime.increase_by_sec(delta * ticks_pr_sec)
+"
+
+[node name="game_ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ir7so")
+
+[node name="bg_green" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.313726, 0.203922, 1)
+
+[node name="bg_image" type="TextureRect" parent="bg_green"]
+layout_mode = 0
+offset_right = 1536.0
+offset_bottom = 1024.0
+theme = ExtResource("2_3bfj3")
+texture = ExtResource("1_2gn6w")
+
+[node name="Pt_profile" type="Panel" parent="bg_green"]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 31.0
+offset_right = 315.0
+offset_bottom = 71.0
+
+[node name="pt_bg2" type="Panel" parent="bg_green/Pt_profile"]
+z_index = 2
+layout_mode = 0
+offset_right = 576.0
+offset_bottom = 974.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d1yoc")
+
+[node name="Case_data" type="Label" parent="bg_green/Pt_profile/pt_bg2"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 285.0
+offset_right = 566.0
+offset_bottom = 1026.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "PC: Chest and Abdominal pain
+51 year old female with 48 hours of RUQ off and on, Epigastric pain that radiates into R chest with deep inspiration.  Pt. fits description of F/F/F
+ 
+ROS:  No fever, + N/V, Some fatty food intolerance and has some dyspepsia.  SOB with pain, no cough or exertional symptoms
+ 
+PMHx:  DM, HTN, Cholesterol
+ 
+PSHx: Appy, Breast Reduction
+ 
+FHx: + CAD, +DM, + CVD
+ 
+Meds: Lipitor, metformin, HCTZ
+
+Allergies: NSAIDS
+
+LABS:   "
+autowrap_mode = 2
+
+[node name="Pt_data" type="Label" parent="bg_green/Pt_profile/pt_bg2"]
+layout_mode = 0
+offset_left = 196.0
+offset_top = 28.0
+offset_right = 442.0
+offset_bottom = 273.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Female
+Age: 51
+HR: 110 bpm
+BP: 105/68
+SpO2: 94%
+Resp Rate: ?
+Temp: 39.4"
+autowrap_mode = 2
+
+[node name="PT_photo" type="TextureRect" parent="bg_green/Pt_profile/pt_bg2"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 14.0
+offset_right = 176.0
+offset_bottom = 274.0
+texture = ExtResource("4_ir7so")
+
+[node name="pt_bg1" type="Panel" parent="bg_green/Pt_profile"]
+z_index = 2
+layout_mode = 0
+offset_right = 576.0
+offset_bottom = 974.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d1yoc")
+
+[node name="Case_data" type="Label" parent="bg_green/Pt_profile/pt_bg1"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 285.0
+offset_right = 566.0
+offset_bottom = 1026.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "EMC: PT complained of nausea for most of the day but denies having abdominal pain. Has mild lower chest tightness. His landlord called the ambulance as they heard him vomiting and observed that there was what looked like a large volume of blood in the toilet
+
+PC: Been vomiting for 2 days, it began as coffee grounds and progressed to bright red. Last beer was 3 hours ago and  stopped because of vomiting. I am fine and just need a beer.
+
+PMHx: Alcoholic, 10-20 beers/day - HTN
+
+Mx: Bendrofluazide 2.5mg
+
+NKDA
+
+SHx: Unemployed, lives in house as a tenant with an elderly woman, heavy smoker. Has a brother in Auckland who he hasn’t seen for several years - would like him to be contacted if he were likely to need an operation or be put to sleep."
+autowrap_mode = 2
+
+[node name="Pt_data" type="Label" parent="bg_green/Pt_profile/pt_bg1"]
+layout_mode = 0
+offset_left = 196.0
+offset_top = 28.0
+offset_right = 442.0
+offset_bottom = 273.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Male
+Age: 58
+HR: 115
+BP: 105/60
+SpO2: 95%
+Resp Rate:  26
+Temp: 37.8
+"
+autowrap_mode = 2
+
+[node name="PT_photo" type="TextureRect" parent="bg_green/Pt_profile/pt_bg1"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 14.0
+offset_right = 176.0
+offset_bottom = 274.0
+texture = ExtResource("2_mbj17")
+
+[node name="pt_list" type="VBoxContainer" parent="bg_green"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 27.0
+offset_top = 31.0
+offset_right = -1272.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Main_Buttons" type="VBoxContainer" parent="bg_green"]
+layout_mode = 0
+offset_left = 879.0
+offset_top = 50.0
+offset_right = 1136.0
+offset_bottom = 987.0
+script = SubResource("GDScript_ir7so")
+
+[node name="wait" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "wait"
+
+[node name="test" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "test"
+
+[node name="treat" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "treat"
+
+[node name="help" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "help"
+
+[node name="dx" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "dx"
+
+[node name="present" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "pres"

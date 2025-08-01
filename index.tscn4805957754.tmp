@@ -1,0 +1,153 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbh26n8hy8ks5"]
+
+[ext_resource type="Texture2D" uid="uid://bvvx0kbx2pwbm" path="res://sprites/BACKGROUND.png" id="1_2gn6w"]
+[ext_resource type="Script" uid="uid://bw7nawv5r1mn7" path="res://index.gd" id="1_ir7so"]
+[ext_resource type="Texture2D" uid="uid://dnf8sex4pl6gu" path="res://art/facepic.png" id="2_mbj17"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d1yoc"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[node name="game_ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ir7so")
+
+[node name="bg_green" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.313726, 0.203922, 1)
+
+[node name="bg_image" type="TextureRect" parent="bg_green"]
+layout_mode = 0
+offset_right = 1536.0
+offset_bottom = 1024.0
+texture = ExtResource("1_2gn6w")
+
+[node name="Pt_profile" type="Panel" parent="bg_green"]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 31.0
+offset_right = 315.0
+offset_bottom = 71.0
+
+[node name="pt_bg2" type="Panel" parent="bg_green/Pt_profile"]
+z_index = 2
+layout_mode = 0
+offset_right = 576.0
+offset_bottom = 974.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d1yoc")
+
+[node name="Case_data" type="Label" parent="bg_green/Pt_profile/pt_bg2"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 285.0
+offset_right = 566.0
+offset_bottom = 1026.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+autowrap_mode = 2
+
+[node name="Pt_data" type="Label" parent="bg_green/Pt_profile/pt_bg2"]
+layout_mode = 0
+offset_left = 196.0
+offset_top = 28.0
+offset_right = 442.0
+offset_bottom = 273.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Male
+Age: 58
+HR: 115
+BP: 105/60
+SpO2: 95%
+Resp Rate:  26
+Temp: 37.8
+"
+autowrap_mode = 2
+
+[node name="PT_photo" type="TextureRect" parent="bg_green/Pt_profile/pt_bg2"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 14.0
+offset_right = 176.0
+offset_bottom = 274.0
+texture = ExtResource("2_mbj17")
+
+[node name="pt_bg1" type="Panel" parent="bg_green/Pt_profile"]
+z_index = 2
+layout_mode = 0
+offset_right = 576.0
+offset_bottom = 974.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_d1yoc")
+
+[node name="Case_data" type="Label" parent="bg_green/Pt_profile/pt_bg1"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 285.0
+offset_right = 566.0
+offset_bottom = 1026.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "EMC: PT complained of nausea for most of the day but denies having abdominal pain. Has mild lower chest tightness. His landlord called the ambulance as they heard him vomiting and observed that there was what looked like a large volume of blood in the toilet
+
+PC: Been vomiting for 2 days, it began as coffee grounds and progressed to bright red. Last beer was 3 hours ago and  stopped because of vomiting. I am fine and just need a beer.
+
+PMHx: Alcoholic, 10-20 beers/day - HTN
+
+Mx: Bendrofluazide 2.5mg
+
+NKDA
+
+SHx: Unemployed, lives in house as a tenant with an elderly woman, heavy smoker. Has a brother in Auckland who he hasn’t seen for several years - would like him to be contacted if he were likely to need an operation or be put to sleep."
+autowrap_mode = 2
+
+[node name="Pt_data" type="Label" parent="bg_green/Pt_profile/pt_bg1"]
+layout_mode = 0
+offset_left = 196.0
+offset_top = 28.0
+offset_right = 442.0
+offset_bottom = 273.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Male
+Age: 58
+HR: 115
+BP: 105/60
+SpO2: 95%
+Resp Rate:  26
+Temp: 37.8
+"
+autowrap_mode = 2
+
+[node name="PT_photo" type="TextureRect" parent="bg_green/Pt_profile/pt_bg1"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 14.0
+offset_right = 176.0
+offset_bottom = 274.0
+texture = ExtResource("2_mbj17")
+
+[node name="pt_list" type="VBoxContainer" parent="bg_green"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 37.0
+offset_right = -1262.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2

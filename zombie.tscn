@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://i5u66xl6k666"]
+
+[ext_resource type="Texture2D" uid="uid://dtjidh6ues1jy" path="res://sprites/20250521_0823_Zombie Emotions Series_simple_compose_01jvqnrsrve5wrzkrww698wmhq.png" id="1_uiaus"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_roy8y"]
+atlas = ExtResource("1_uiaus")
+region = Rect2(512, 750, 512, 750)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmu02"]
+atlas = ExtResource("1_uiaus")
+region = Rect2(512, 2250, 512, 750)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eseir"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_roy8y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmu02")
+}],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uiaus"]
+size = Vector2(264, 539)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_eseir")
+frame_progress = 0.226397
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-29, 1.5)
+shape = SubResource("RectangleShape2D_uiaus")
