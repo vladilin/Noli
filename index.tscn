@@ -128,15 +128,6 @@ script = ExtResource("6_2fy20")
 date_time = SubResource("Resource_2fy20")
 metadata/_custom_type_script = "uid://cgmpk3cl1l8aw"
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="timeGUI" parent="CanvasLayer" instance=ExtResource("8_mvkpm")]
-offset_left = 603.0
-offset_top = 33.0
-offset_right = -811.0
-offset_bottom = -782.0
-scale = Vector2(2.09201, 2.069)
-
 [node name="PatientManager" type="Node" parent="."]
 script = SubResource("GDScript_d1yoc")
 
@@ -149,6 +140,31 @@ script = ExtResource("7_2fy20")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="timeGUI" parent="CanvasLayer" instance=ExtResource("8_mvkpm")]
+offset_left = 603.0
+offset_top = 33.0
+offset_right = -811.0
+offset_bottom = -782.0
+scale = Vector2(2.09201, 2.069)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/timeGUI"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 40.0
+offset_right = 116.0
+offset_bottom = 72.0
+
+[node name="Play_Button" type="TextureButton" parent="CanvasLayer/timeGUI/HBoxContainer"]
+layout_mode = 2
+
+[node name="FF_Button" type="TextureButton" parent="CanvasLayer/timeGUI/HBoxContainer"]
+layout_mode = 2
+
+[node name="Skip_Button" type="TextureButton" parent="CanvasLayer/timeGUI/HBoxContainer"]
+layout_mode = 2
 
 [connection signal="updated" from="TimeSystem" to="CanvasLayer/timeGUI" method="_on_time_system_updated"]
 [connection signal="request_completed" from="PatientManagerB/HTTPRequest" to="PatientManagerB" method="_on_http_request_request_completed"]
