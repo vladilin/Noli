@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://cbh26n8hy8ks5"]
+[gd_scene load_steps=21 format=3 uid="uid://cbh26n8hy8ks5"]
 
 [ext_resource type="Texture2D" uid="uid://bvvx0kbx2pwbm" path="res://sprites/BACKGROUND.png" id="1_2gn6w"]
 [ext_resource type="Script" uid="uid://bw7nawv5r1mn7" path="res://index.gd" id="1_ir7so"]
 [ext_resource type="Theme" uid="uid://bu4xhjy2de5lw" path="res://styles/new1.0.tres" id="2_3bfj3"]
+[ext_resource type="Theme" uid="uid://fv5ujqb5ywr1" path="res://styles/test_treat_help.tres" id="4_eheuu"]
 [ext_resource type="Script" uid="uid://cgmpk3cl1l8aw" path="res://time/time_system.gd" id="6_2fy20"]
 [ext_resource type="Script" uid="uid://bom0tjxh2xywl" path="res://patient_manager_b.gd" id="7_2fy20"]
 [ext_resource type="Script" uid="uid://b1vsapuleqnq3" path="res://time/date_time.gd" id="7_mvkpm"]
@@ -13,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://cp8j8chc22wo4" path="res://sprites/button_on_FF.png" id="11_eheuu"]
 [ext_resource type="Texture2D" uid="uid://b0neboih0ye1e" path="res://sprites/button_skip.png" id="12_t1fqd"]
 [ext_resource type="Texture2D" uid="uid://bmb87iy6r3eff" path="res://sprites/button_on_skip.png" id="13_eheuu"]
+[ext_resource type="StyleBox" uid="uid://c8rj7lcbx1dhg" path="res://styles/patient_background.tres" id="15_o6jxw"]
+[ext_resource type="Script" uid="uid://bqw8y7h3phb1" path="res://dummy.gd" id="16_lcafn"]
 
 [sub_resource type="GDScript" id="GDScript_ir7so"]
 
@@ -52,11 +55,15 @@ func load_patients_from_csv() -> void:
 	print(\"Loaded %d patients from CSV!\" % patients.size())
 "
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o6jxw"]
+bg_color = Color(1, 1, 1, 1)
+
 [node name="game_ui" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ir7so")
@@ -72,11 +79,17 @@ grow_vertical = 2
 color = Color(0.12549, 0.313726, 0.203922, 1)
 
 [node name="bg_image" type="TextureRect" parent="bg_green"]
-layout_mode = 0
-offset_right = 1536.0
-offset_bottom = 1024.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.997
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -8.0
+offset_right = 7.62
+offset_bottom = 2.0
 theme = ExtResource("2_3bfj3")
 texture = ExtResource("1_2gn6w")
+expand_mode = 1
 
 [node name="Pt_profile" type="Panel" parent="bg_green"]
 layout_mode = 0
@@ -92,26 +105,30 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 27.0
-offset_top = 31.0
+offset_top = 171.0
 offset_right = -1272.0
 offset_bottom = -51.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Main_Buttons" type="VBoxContainer" parent="bg_green"]
+z_index = 4
 layout_mode = 0
-offset_left = 879.0
-offset_top = 50.0
-offset_right = 1136.0
-offset_bottom = 987.0
+offset_left = 604.0
+offset_top = 39.0
+offset_right = 839.0
+offset_bottom = 623.0
+theme = ExtResource("4_eheuu")
 script = SubResource("GDScript_ir7so")
 
 [node name="wait" type="Button" parent="bg_green/Main_Buttons"]
+visible = false
 layout_mode = 2
 text = "wait"
 
 [node name="test" type="Button" parent="bg_green/Main_Buttons"]
 layout_mode = 2
+theme = ExtResource("4_eheuu")
 text = "test"
 
 [node name="treat" type="Button" parent="bg_green/Main_Buttons"]
@@ -120,15 +137,16 @@ text = "treat"
 
 [node name="help" type="Button" parent="bg_green/Main_Buttons"]
 layout_mode = 2
-text = "help"
+theme = ExtResource("4_eheuu")
+text = "Consult"
 
 [node name="dx" type="Button" parent="bg_green/Main_Buttons"]
 layout_mode = 2
-text = "dx"
+text = "Dx"
 
 [node name="present" type="Button" parent="bg_green/Main_Buttons"]
 layout_mode = 2
-text = "pres"
+text = "present"
 
 [node name="TimeSystem" type="Node" parent="."]
 script = ExtResource("6_2fy20")
@@ -143,18 +161,30 @@ script = ExtResource("7_2fy20")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="PatientManagerB"]
 
-[node name="PatientList" type="ItemList" parent="."]
+[node name="Bg_pop_up_panel" type="Panel" parent="."]
+visible = false
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 848.0
+offset_top = 31.0
+offset_right = 1507.0
+offset_bottom = 953.0
+theme_override_styles/panel = ExtResource("15_o6jxw")
+
+[node name="PanelContainer" type="PanelContainer" parent="Bg_pop_up_panel"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 649.0
+offset_bottom = 915.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_o6jxw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="timeGUI" parent="CanvasLayer" instance=ExtResource("8_mvkpm")]
-offset_left = 603.0
-offset_top = 33.0
-offset_right = -821.0
-offset_bottom = -793.0
+offset_left = 31.0
+offset_top = 12.0
+offset_right = -1393.0
+offset_bottom = -814.0
 scale = Vector2(2.09201, 2.069)
 
 [node name="Play_Button" type="TextureButton" parent="CanvasLayer/timeGUI"]
@@ -209,6 +239,9 @@ texture_normal = ExtResource("12_t1fqd")
 texture_pressed = ExtResource("13_eheuu")
 ignore_texture_size = true
 stretch_mode = 4
+
+[node name="dummy" type="Node" parent="."]
+script = ExtResource("16_lcafn")
 
 [connection signal="updated" from="TimeSystem" to="CanvasLayer/timeGUI" method="_on_time_system_updated"]
 [connection signal="request_completed" from="PatientManagerB/HTTPRequest" to="PatientManagerB" method="_on_http_request_request_completed"]

@@ -11,12 +11,27 @@ var button_theme = preload("res://styles/new1.0.tres")
 var pt_buttons: Array[Button] = []
 var pt_backgrounds: Array = []
 
+@onready var bg_popup_panel: Panel = $Bg_pop_up_panel
+
 func _ready():
+	print("CSV in CSV folder? ", FileAccess.file_exists("res://CSV/NLI_CS1.csv"))
+	print("CSV in root? ", FileAccess.file_exists("res://NLI_CS1.csv"))
+	
+	
 	print("index.gd _ready() running")
 	print("pt_profile is: ", pt_profile)
 	print("pt_list is: ", pt_list)
 	print("patient_manager is: ", patient_manager)
 	patient_manager.patients_loaded.connect(_on_patients_loaded)
+	
+	for button in $bg_green/Main_Buttons.get_children():
+		if button is Button:
+			button.pressed.connect(_on_main_button_pressed)
+	
+func _on_main_button_pressed(): #this is to make the popup visible
+	if not bg_popup_panel.visible:
+		bg_popup_panel.visible = true
+
 
 func _on_patients_loaded():
 	print("Patients loaded! Building UI... count: ", patient_manager.patients.size())

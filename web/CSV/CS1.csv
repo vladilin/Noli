@@ -1,0 +1,124 @@
+﻿Name,Abbr,Disease,TEXT,AGE,SEX,HR,BP,SPO2,RESP,Temp
+Wang,GI,"Upper GI Bleed
+","HPc: The patient presents with a 2-day history of vomiting which began as coffee grounds and progressed to bright red. His last drink was 3 hours ago and he stopped because of vomiting. He complains of general chest discomfort and nausea. He insists that he is “fine” and just “needs a beer”.
+
+PMHx: Alcoholic, 10-20 beers/day
+
+HTN
+
+Mx: Bendrofluazide 2.5mg
+
+NKDA
+
+OE 105/76 HR 114 36.2 96% RR 26 on RA GCS 15
+
+Patent looks pale an unkempt and generally unwell smelling of ETOH with brown vomitus on his face and clothes (could use a picture)
+
+Conjunctiva are pale
+
+Clear = BS
+
+Tachy RRR with no ant chest wall tenderness
+
+ABD is soft tender epigastric region",58,M,115,105/60,95%,26,37.8
+Perakopolis,INF,INF MI with R extension,"EMS: 60 year old M with Crushing substernal pain (center chest) PTA
+
+CC: Chest pain for 6 hours. Pain is dull to left arm. Patient has SOB, nausea, and sweating.  Has never had this before.
+ 
+The setting is a small rural hospital with no cath lab. Nearest university center is 3 hours away by road, no air available
+ 
+ROS: Unremarkable.
+Meds: Lipitor
+PMHx:  Hypercholesterol
+
+PSHx: 1ppd X 30 yrs
+
+NKDA",60,M,83,110/80,98%,18,?
+Smith,COPD,Chronic Obstructive Pulmonary Disease Exacerbation ,"CC: Increasing SOB for 4 days 
+
+58 year old male with SOB, coughing green sputum, wheezing not responsive to home meds. Patient has SOB, nausea, and sweating. Has been unwell with the “flu”for a week but this has got much worse. 
+
+ROS: No Fever, chills, ill appearing. 
+
+PMHx: COPD 
+
+PSHx: 1ppd X 30 yrs, ETOH 2 glasses of wine a night 
+
+Meds: Duolin MDI 
+
+Allergies: NKDA",58,F,112,130/90,89%,28,37.5
+Krougner,GAC,"Gangrenous Acute Cholecystitis (GALL BLADER)
+CP at hand over","The scenario starts as turnover is given and labs are pending.
+
+Dr Smitty presents case to ED house officer who says to admit the patient to the cardiology service when the labs are back
+
+D Smitty is worried about an acute coronary syndrome.
+
+Patient has a history of Diabetes and hypertension and smokes and also is concerned as his father died at 52 of a heart attack. Does not know what meds he is on
+
+ASA, GTN and fentanyl have been given
+
+The ECG shows NSR with nonspecific T wave inversion laterally
+
+
+After handover the nurse asks the house officer to re-evaluate the patient as he is complaining of more pain. The nurse has repeated the ECG and it is unchanged.
+
+
+OE Pt looks miserable and grey and is actively vomiting
+
+HR 130 104/ 70 RR 28 99% T 38
+",58,M,110,180/85,98%,22,
+Bennett,AC,AcuteCholey,"Chest and Abdominal pain 
+
+51 year old female with 48 hours of RUQ off and on, Epigastric pain that radiates into R chest and back with deep inspiration. 
+
+
+ROS: No fever, + N/V, Some fatty food intolerance and has some dyspepsia. SOB with pain, no cough or exertional symptoms 
+
+
+PMHx: DM, HTN, Cholesterol 
+
+
+PSHx: Appy, Breast Reduction 
+
+
+FHx: + CAD, +DM, + CVD 
+
+
+Meds: Lipitor, metformin, HCTZ 
+
+Allergies: NSAIDS",51,F,110,105/68,94%,?,39.4
+ Perakopolis,AD,Aortic Dissection Type B,"EMS Presentation:
+
+67 A 67-year-old male collapsed. Has chest pain and has been given fentanyl and ondansetron en route
+
+
+PC Sudden onset of sharp chest pain caused him to collapse. Currently is awake and alert and complains of chest and abdominal pain radiating to back 
+
+PMH: - Normally well, recent diagnosis of fibromyalgia, L macular branch of retinal artery occlusion HTN Meds: -NSAIDS, candasartan 
+
+Allergies: -nil 
+
+PSH:-nil 
+
+Social :- independent
+",67,M,120,210/110,99%,26,36
+Krougner,Peri,Pericaditis ,"CC : HPI 20 year old M uni student had awakened 2 hours prior to arrival with substernal and left sided chest pain, describing the pain as a sharp that radiated up to his left shoulder, associated with some nausea and some shortness of breath. He has no lightheadedness or diaphoresis. He has never had any similar episodes in the past, and he knows of no alleviating or aggravating factors. He has no other pains, but rates the chest pain to a level of 7 out of 10.
+PMH    none
+PSH     none
+MEDS  none
+ALL    none
+SH  no tobacco, occasional alcohol, does admit to 2 episodes of steroid abuse to work out, denies any other illicit drugs, Uni student
+FH   no significant illnesses
+ROS  subjective fever, URI about a week ago
+OE Looks uncomfortable",20,M,110,130/90,100%,22,37.9
+Bundalayava,PNE,Pneumonia,"Pt was released from hospital one week ago after under going an “Appendectomy”. He has been doing well with no abdominal pain and is not taking pain meds. Arrived in ED today with shortness of breath, coughing green sputum, wheezing sweating, fever, chills and nausea and appears ill. Symptoms have not responded to home meds.
+
+
+Past medical history: chronic obstructive airways disease – normally can walk on flat for 500m; 2 courses prednisone in last 12 months for exacerbarions
+
+
+Soc Hx Smokes 1 pack of cigarette per day for 30 years and drinks 2 glasses of wine a night
+
+
+NKDA",58,F,120,140/68,90%,28,39

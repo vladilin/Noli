@@ -1,0 +1,20 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://fv5ujqb5ywr1"]
+
+[ext_resource type="FontFile" uid="uid://ch5uounrqld2c" path="res://styles/Kenney Mini Square.ttf" id="1_eg4xh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bh13b"]
+bg_color = Color(0.299182, 0.682812, 0.547167, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[resource]
+Button/font_sizes/font_size = 37
+Button/fonts/font = ExtResource("1_eg4xh")
+Button/styles/normal = SubResource("StyleBoxFlat_bh13b")
