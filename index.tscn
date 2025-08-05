@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cbh26n8hy8ks5"]
+[gd_scene load_steps=17 format=3 uid="uid://cbh26n8hy8ks5"]
 
 [ext_resource type="Texture2D" uid="uid://bvvx0kbx2pwbm" path="res://sprites/BACKGROUND.png" id="1_2gn6w"]
 [ext_resource type="Script" uid="uid://bw7nawv5r1mn7" path="res://index.gd" id="1_ir7so"]
@@ -7,6 +7,12 @@
 [ext_resource type="Script" uid="uid://bom0tjxh2xywl" path="res://patient_manager_b.gd" id="7_2fy20"]
 [ext_resource type="Script" uid="uid://b1vsapuleqnq3" path="res://time/date_time.gd" id="7_mvkpm"]
 [ext_resource type="PackedScene" uid="uid://ck2c58key4r5s" path="res://time_ui.tscn" id="8_mvkpm"]
+[ext_resource type="Texture2D" uid="uid://dn8oj27iwovwd" path="res://sprites/button_play.png" id="8_n7lv4"]
+[ext_resource type="Texture2D" uid="uid://dfg50neoue3wb" path="res://sprites/button_on_play.png" id="9_u165g"]
+[ext_resource type="Texture2D" uid="uid://c1syn4j3cuk3k" path="res://sprites/button_FF.png" id="10_t1fqd"]
+[ext_resource type="Texture2D" uid="uid://cp8j8chc22wo4" path="res://sprites/button_on_FF.png" id="11_eheuu"]
+[ext_resource type="Texture2D" uid="uid://b0neboih0ye1e" path="res://sprites/button_skip.png" id="12_t1fqd"]
+[ext_resource type="Texture2D" uid="uid://bmb87iy6r3eff" path="res://sprites/button_on_skip.png" id="13_eheuu"]
 
 [sub_resource type="GDScript" id="GDScript_ir7so"]
 
@@ -54,6 +60,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ir7so")
+metadata/_edit_horizontal_guides_ = [146.0]
 
 [node name="bg_green" type="ColorRect" parent="."]
 layout_mode = 1
@@ -146,25 +153,65 @@ offset_bottom = 40.0
 [node name="timeGUI" parent="CanvasLayer" instance=ExtResource("8_mvkpm")]
 offset_left = 603.0
 offset_top = 33.0
-offset_right = -811.0
-offset_bottom = -782.0
+offset_right = -821.0
+offset_bottom = -793.0
 scale = Vector2(2.09201, 2.069)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/timeGUI"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 40.0
-offset_right = 116.0
-offset_bottom = 72.0
+[node name="Play_Button" type="TextureButton" parent="CanvasLayer/timeGUI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.12616
+offset_top = -33.884
+offset_right = 38.1262
+offset_bottom = -3.884
+grow_vertical = 0
+texture_normal = ExtResource("8_n7lv4")
+texture_pressed = ExtResource("9_u165g")
+ignore_texture_size = true
+stretch_mode = 5
 
-[node name="Play_Button" type="TextureButton" parent="CanvasLayer/timeGUI/HBoxContainer"]
-layout_mode = 2
+[node name="FF_Button" type="TextureButton" parent="CanvasLayer/timeGUI"]
+clip_contents = true
+custom_minimum_size = Vector2(27, 11)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -15.4572
+offset_top = -34.3673
+offset_right = 14.5428
+offset_bottom = -4.36733
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("10_t1fqd")
+texture_pressed = ExtResource("11_eheuu")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="FF_Button" type="TextureButton" parent="CanvasLayer/timeGUI/HBoxContainer"]
-layout_mode = 2
-
-[node name="Skip_Button" type="TextureButton" parent="CanvasLayer/timeGUI/HBoxContainer"]
-layout_mode = 2
+[node name="Skip_Button" type="TextureButton" parent="CanvasLayer/timeGUI"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -38.0845
+offset_top = -33.884
+offset_right = -8.0845
+offset_bottom = -3.884
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("12_t1fqd")
+texture_pressed = ExtResource("13_eheuu")
+ignore_texture_size = true
+stretch_mode = 4
 
 [connection signal="updated" from="TimeSystem" to="CanvasLayer/timeGUI" method="_on_time_system_updated"]
 [connection signal="request_completed" from="PatientManagerB/HTTPRequest" to="PatientManagerB" method="_on_http_request_request_completed"]
+[connection signal="pressed" from="CanvasLayer/timeGUI/Play_Button" to="CanvasLayer/timeGUI" method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/timeGUI/FF_Button" to="CanvasLayer/timeGUI" method="_on_ff_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/timeGUI/Skip_Button" to="CanvasLayer/timeGUI" method="_on_skip_button_pressed"]

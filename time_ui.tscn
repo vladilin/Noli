@@ -105,10 +105,10 @@ grow_vertical = 2
 
 [node name="time" type="Label" parent="clock_bg/ClockControl"]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 4.55561
+offset_left = -2.0
+offset_top = 5.0
 offset_right = 81.0
-offset_bottom = 27.5556
+offset_bottom = 28.0
 text = "12:34"
 label_settings = ExtResource("2_xi4ts")
 

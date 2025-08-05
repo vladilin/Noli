@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Night of the living ILL"
+config/name="Night of the living ILL (edit)"
 run/main_scene="uid://cbh26n8hy8ks5"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
