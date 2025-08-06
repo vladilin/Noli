@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cbh26n8hy8ks5"]
+[gd_scene load_steps=20 format=3 uid="uid://cbh26n8hy8ks5"]
 
 [ext_resource type="Texture2D" uid="uid://bvvx0kbx2pwbm" path="res://sprites/BACKGROUND.png" id="1_2gn6w"]
 [ext_resource type="Script" uid="uid://bw7nawv5r1mn7" path="res://index.gd" id="1_ir7so"]
@@ -15,7 +15,6 @@
 [ext_resource type="Texture2D" uid="uid://b0neboih0ye1e" path="res://sprites/button_skip.png" id="12_t1fqd"]
 [ext_resource type="Texture2D" uid="uid://bmb87iy6r3eff" path="res://sprites/button_on_skip.png" id="13_eheuu"]
 [ext_resource type="StyleBox" uid="uid://c8rj7lcbx1dhg" path="res://styles/patient_background.tres" id="15_o6jxw"]
-[ext_resource type="Script" uid="uid://bqw8y7h3phb1" path="res://dummy.gd" id="16_lcafn"]
 
 [sub_resource type="GDScript" id="GDScript_ir7so"]
 
@@ -178,6 +177,15 @@ offset_right = 649.0
 offset_bottom = 915.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_o6jxw")
 
+[node name="LineEdit" type="LineEdit" parent="Bg_pop_up_panel/PanelContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Bg_pop_up_panel/PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Bg_pop_up_panel/PanelContainer/ScrollContainer"]
+layout_mode = 2
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="timeGUI" parent="CanvasLayer" instance=ExtResource("8_mvkpm")]
@@ -239,9 +247,6 @@ texture_normal = ExtResource("12_t1fqd")
 texture_pressed = ExtResource("13_eheuu")
 ignore_texture_size = true
 stretch_mode = 4
-
-[node name="dummy" type="Node" parent="."]
-script = ExtResource("16_lcafn")
 
 [connection signal="updated" from="TimeSystem" to="CanvasLayer/timeGUI" method="_on_time_system_updated"]
 [connection signal="request_completed" from="PatientManagerB/HTTPRequest" to="PatientManagerB" method="_on_http_request_request_completed"]

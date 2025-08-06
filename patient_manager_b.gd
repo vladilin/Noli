@@ -7,8 +7,7 @@ const CsvParser = preload("res://csv_parser.gd")  # Update the path if your file
 # const Patient = preload("res://Patient.gd")     # Uncomment if Patient is not a global class
 
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/1FQYIbDn7SayINMZU5uttnsbu-3I69FUGhwkMh_9VPu4/export?format=csv"
-const LOCAL_CSV_PATH = "res://CSV/NLI_CS1.csv"  #6/8 IF local
-
+const BACKUP_CSV_URL = "https://homepages.ecs.vuw.ac.nz/~ilinvlad/zombie/CSV/NLI_CS1.csv"  #6/8 IF local
 
 @onready var http_request: HTTPRequest = $HTTPRequest
 
@@ -20,7 +19,39 @@ func _ready():
 		http_request.request(SHEET_URL)
 	else:
 		print("Error: HTTPRequest node not found!")
-		_load_csv_from_file(LOCAL_CSV_PATH) #6/8 IF local
+		_request_backup_csv() #6/8 IF local
+
+var _redirect_count = 0
+const MAX_REDIRECTS = 3
+
+func _on_http_request_request_completed(result, response_code, headers, body) -> void:
+	print("Response code:", response_code)
+	if response_code == 307 and _redirect_count < MAX_REDIRECTS:
+		for header in headers:
+			if header.begins_with("Location: "):
+				var redirect_url = header.substr(10)
+				print("Redirecting to:", redirect_url)
+				_redirect_count += 1
+				$HTTPRequest.request(redirect_url)
+				return
+		print("No Location header found in 307 response.")
+		_request_backup_csv() #6/8 IF local
+		return
+	if result != HTTPRequest.RESULT_SUCCESS or response_code != 200: #6/8 IF local
+		print("Failed to load from Google Sheets, loading backup server CSV instead.") #6/8 IF local
+		_request_backup_csv() #6/8 IF local
+		return
+	if response_code == 200:
+		var csv_data = body.get_string_from_utf8()
+		print("CSV data received:\n", csv_data)
+		_parse_csv(csv_data)
+
+func _request_backup_csv(): #6/8 IF local
+	if http_request:
+		print("Requesting backup CSV from server...")
+		http_request.request(BACKUP_CSV_URL)
+	else:
+		print("No HTTPRequest node found for backup CSV.")
 
 func _parse_csv(csv_text: String) -> void:
 	print("_parse_csv() called")
@@ -70,38 +101,3 @@ func _parse_csv(csv_text: String) -> void:
 		))
 	print("_parse_csv() complete. Total patients loaded: ", patients.size())
 	emit_signal("patients_loaded")
-
-var _redirect_count = 0
-const MAX_REDIRECTS = 3
-
-func _on_http_request_request_completed(result, response_code, headers, body) -> void:
-	print("Response code:", response_code)
-	if response_code == 307 and _redirect_count < MAX_REDIRECTS:
-		for header in headers:
-			if header.begins_with("Location: "):
-				var redirect_url = header.substr(10)
-				print("Redirecting to:", redirect_url)
-				_redirect_count += 1
-				$HTTPRequest.request(redirect_url)
-				return
-		print("No Location header found in 307 response.")
-		_load_csv_from_file(LOCAL_CSV_PATH) #6/8 IF local
-		return
-	if result != HTTPRequest.RESULT_SUCCESS or response_code != 200: #6/8 IF local
-		print("Failed to load from Google Sheets, loading local CSV instead.") #6/8 IF local
-		_load_csv_from_file(LOCAL_CSV_PATH) #6/8 IF local
-		return
-	if response_code == 200:
-		var csv_data = body.get_string_from_utf8()
-		print("CSV data received:\n", csv_data)
-		_parse_csv(csv_data)
-
-#6/8 IF local
-func _load_csv_from_file(path: String) -> void:
-	print("Loading local CSV from: ", path)
-	var file = FileAccess.open(path, FileAccess.READ)
-	if file:
-		var csv_string = file.get_as_text()
-		_parse_csv(csv_string)
-	else:
-		print("Failed to load local CSV file: ", path)
