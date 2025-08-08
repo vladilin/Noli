@@ -12,6 +12,10 @@ var pt_buttons: Array[Button] = []
 var pt_backgrounds: Array = []
 
 @onready var bg_popup_panel: Panel = $Bg_pop_up_panel
+@onready var results_list: VBoxContainer = $Bg_pop_up_panel/MarginContainer2/VBoxContainer
+@onready var search_box: LineEdit = $Bg_pop_up_panel/MarginContainer/HBoxContainer/searchBox
+@onready var treatment_manager: TreatmentManager = $TreatmentManager
+
 
 func _ready():
 	print("CSV in CSV folder? ", FileAccess.file_exists("res://CSV/NLI_CS1.csv"))
@@ -27,6 +31,43 @@ func _ready():
 	for button in $bg_green/Main_Buttons.get_children():
 		if button is Button:
 			button.pressed.connect(_on_main_button_pressed)
+			
+	search_box.text_changed.connect(_on_search_box_text_changed)
+	
+func _on_search_box_text_changed(new_text):
+	var results = treatment_manager.search_treatments(new_text)
+	display_search_results(results)
+
+func display_search_results(results: Array) -> void:
+	print("Displaying results: ", results.size())
+	# Remove old results
+	for i in range(1, results_list.get_child_count()):
+		results_list.get_child(i).queue_free()
+	# Add new results
+	for treatment in results:
+		var row = HBoxContainer.new()
+
+		var name_label = Label.new()
+		name_label.text = treatment["name"]
+		name_label.add_theme_color_override("font_color", Color.BLACK)
+		row.add_child(name_label)
+
+		var min_label = Label.new()
+		min_label.text = str(treatment["minutes"]) + " min"
+		min_label.add_theme_color_override("font_color", Color.BLACK)
+		row.add_child(min_label)
+
+		var action_btn = Button.new()
+		action_btn.text = "Do Action"
+		# Attach treatment info or index if you need it later:
+		action_btn.pressed.connect(_on_treatment_action_pressed.bind(treatment))
+		row.add_child(action_btn)
+
+		results_list.add_child(row)
+
+func _on_treatment_action_pressed(treatment):
+	print("Action for treatment: ", treatment["name"])
+	# Here you can call any function you want, or pass the treatment object further.
 	
 func _on_main_button_pressed(): #this is to make the popup visible
 	if not bg_popup_panel.visible:
