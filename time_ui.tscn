@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://ck2c58key4r5s"]
 
 [ext_resource type="Texture2D" uid="uid://dvw4w0b5w0sk6" path="res://sprites/time_gui.png" id="1_s1rui"]
-[ext_resource type="Script" uid="uid://cfowy081vh8ix" path="res://time_ui.gd" id="1_ymhmv"]
+[ext_resource type="Script" uid="uid://dcvaf2monmxeh" path="res://time_ui.gd" id="1_ymhmv"]
 [ext_resource type="LabelSettings" uid="uid://c7xcdxwgm2kec" path="res://styles/clockfont.tres" id="2_xi4ts"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ymhmv"]

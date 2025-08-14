@@ -1,31 +1,32 @@
-class_name DateTime extends Resource
+class_name DateTime
+extends Resource
 
-@export_range(0, 59) var seconds: int = 0
-@export_range(0, 59) var minutes: int = 0
-@export_range(0, 23) var hours: int = 0
-@export var days: int = 0
+@export var year: int = 2025
+@export var month: int = 1
+@export var day: int = 1
+@export var hour: int = 0
+@export var minute: int = 0
+@export var second: float = 0.0
 
-var delta_time: float = 0
+# Increase time by seconds, handling rollovers
+func increase_by_sec(seconds: float) -> void:
+	second += seconds
+	while second >= 60.0:
+		second -= 60.0
+		minute += 1
+	while minute >= 60:
+		minute -= 60
+		hour += 1
+	while hour >= 24:
+		hour -= 24
+		day += 1
+		# TODO: month/year rollover if needed
 
-func increase_by_sec(delta_seconds: float) -> void:
-	delta_time += delta_seconds
-	if delta_time < 1: return
-	
-	var delta_int_secs: int = delta_time
-	delta_time -= delta_int_secs
-	
-	seconds += delta_int_secs
-	
-	if seconds >= 60:
-		minutes += seconds / 60
-		seconds = seconds % 60
-		
-	if minutes >= 60:
-		hours += minutes / 60
-		minutes = minutes % 60
-		
-	if hours >= 24:
-		days += hours / 24
-		hours = hours % 24
+func get_minutes_total() -> int:
+	return hour * 60 + minute
 
-	#print_debug(str(days) + ":" + str(hours) + ":" + str(minutes) + ":" + str(seconds))
+func get_seconds_total() -> int:
+	return get_minutes_total() * 60 + int(second)
+
+func format_time() -> String:
+	return "%02d:%02d" % [hour, minute]

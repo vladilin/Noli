@@ -16,6 +16,8 @@ var pt_backgrounds: Array = []
 @onready var search_box: LineEdit = $Bg_pop_up_panel/MarginContainer/HBoxContainer/searchBox
 @onready var treatment_manager: TreatmentManager = $TreatmentManager
 
+@onready var time_system: TimeSystem = $TimeSystem
+
 const SEARCH_ROW_SCENE: PackedScene = preload("res://ui/search/search.tscn") # 13/8 ensure correct scene + type
 
 # --- NEW: modes for future Test/Consult/DX/Present support ----------------- # 13/8
@@ -33,7 +35,7 @@ var per_patient: Dictionary = {}
 func _ensure_state(id: String) -> Dictionary:
 	if not per_patient.has(id):
 		per_patient[id] = {
-			"treatments": [],
+			"treatments": [],   # store STRINGS like "Aspirin applied at 08:15"
 			"tests": [],
 			"consults": [],
 			"dx": [],
@@ -44,21 +46,35 @@ func _ensure_state(id: String) -> Dictionary:
 
 
 func _ready() -> void:
+	# Drive countdowns from TimeSystem.updated (fires every frame).           # 13/8
+	# NOTE: Your TimeSystem defines `updated(date_time: DateTime)` and `minute_changed`.
+	# We use `updated` so we can show seconds-resolution countdowns.
+	if time_system and time_system.has_signal("updated"):
+		time_system.updated.connect(_on_time_updated)                          # 13/8
+
 	print("CSV in CSV folder? ", FileAccess.file_exists("res://CSV/NLI_CS1.csv"))
 	print("CSV in root? ", FileAccess.file_exists("res://NLI_CS1.csv"))
-	
-	
+
 	print("index.gd _ready() running")
 	print("pt_profile is: ", pt_profile)
 	print("pt_list is: ", pt_list)
 	print("patient_manager is: ", patient_manager)
 	patient_manager.patients_loaded.connect(_on_patients_loaded)
-	
+
 	for button in $bg_green/Main_Buttons.get_children():
 		if button is Button:
 			button.pressed.connect(_on_main_button_pressed)
-			
+
 	search_box.text_changed.connect(_on_search_box_text_changed)
+
+
+func _on_time_updated(dt: DateTime) -> void:                                   # 13/8
+	# Convert to TOTAL SECONDS: minutes*60 + seconds
+	var current_seconds: int = dt.get_minutes_total() * 60 + int(dt.second)
+	# Fan-out to rows so they update their countdowns
+	for child in results_list.get_children():
+		if child is SearchRow:
+			child.on_time_changed(current_seconds)
 
 
 func _on_search_box_text_changed(new_text: String) -> void: # 13/8 typed
@@ -100,10 +116,60 @@ func display_search_results(results: Array) -> void:
 			"time_suffix": " min",
 			"button_text": "Apply"
 		})
-		row.action_pressed.connect(_on_search_row_action) # button callback
+		# Connect row signals
+		row.action_pressed.connect(_on_row_start_treatment)   # start timer on "Apply"
+		row.treatment_finished.connect(_on_treatment_finished)
+		row.show_results.connect(_on_show_results)
+		# IMPORTANT: Do NOT also connect action_pressed to _on_search_row_action here.
+		# That would push raw Dictionaries into per-patient logs and break Label.text.
+
+
+func _on_row_start_treatment(item: Dictionary):
+	# Duration in MINUTES from item; timer base is current MINUTES              # 13/8
+	var duration: int = int(item.get("minutes", 0))
+	var current_time_min: int = time_system.get_current_minutes()
+	# Find the row object in results_list to start treatment
+	for child in results_list.get_children():
+		if child is SearchRow and child.item == item:
+			child.start_treatment(duration, current_time_min)
+
+
+func _on_treatment_finished(item: Dictionary, finished_time_seconds: int):
+	# Log a STRING only (never a Dictionary)                                    # 13/8
+	var when_str: String = time_system.format_time(int(finished_time_seconds / 60))
+	var name_str: String = str(item.get("name", "Unknown"))
+	var log_entry: String = "%s applied at %s" % [name_str, when_str]
+
+	var state: Dictionary = _ensure_state(current_patient_id)
+	state["treatments"].append(log_entry)
+	print("[LOG] Added to patient", current_patient_id, ":", log_entry)
+
+	# Also render into the currently visible patient's background, if it has a LogContainer
+	var bg: Node = pt_backgrounds[current_patient_index]
+	if bg and bg.has_node("LogContainer"):
+		var log_label := Label.new()
+		log_label.text = log_entry
+		log_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		log_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		log_label.add_theme_color_override("font_color", Color.BLACK)
+		bg.get_node("LogContainer").add_child(log_label)
+	else:
+		# Fallback: drop under pt_profile
+		var fallback_label := Label.new()
+		fallback_label.text = log_entry
+		fallback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		fallback_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		fallback_label.add_theme_color_override("font_color", Color.BLACK)
+		pt_profile.add_child(fallback_label)
+
+
+func _on_show_results(item: Dictionary):
+	# TODO: Scroll pt_profile RichTextLabel to the matching entry or open a detail view
+	print("[RESULTS] Showing results for", item.get("name", "Unknown"))
 
 
 # --- Step 3.4: write actions to the active patient's bucket ----------------- # 13/8
+# (Kept for future modes, not used for TREATMENT "Apply" right now.)
 func _on_search_row_action(item: Dictionary) -> void:
 	if current_patient_id == "":
 		push_warning("No current patient selected; ignoring action.")
@@ -113,8 +179,9 @@ func _on_search_row_action(item: Dictionary) -> void:
 
 	match search_mode:
 		SearchMode.TREATMENT:
-			state["treatments"].append(item)
-			print("[STATE] Added treatment for", current_patient_id, ":", item.get("name",""))
+			# If you re-enable this, append STRINGS only, not Dictionaries.    # 13/8
+			state["treatments"].append("Selected: " + str(item.get("name","")))
+			print("[STATE] Selected treatment for", current_patient_id, ":", item.get("name",""))
 		SearchMode.TEST:
 			state["tests"].append(item)
 			print("[STATE] Added test for", current_patient_id, ":", item.get("name",""))
@@ -133,7 +200,7 @@ func _on_search_row_action(item: Dictionary) -> void:
 func _on_treatment_action_pressed(treatment): # (kept for reference, unused now)
 	print("Action for treatment: ", treatment["name"])
 	# Here you can call any function you want, or pass the treatment object further.
-	
+
 
 func _on_main_button_pressed() -> void: # this is to make the popup visible
 	if not bg_popup_panel.visible:
@@ -169,7 +236,7 @@ func _build_patient_ui() -> void:
 		var btn = Button.new()
 		var patient = patient_manager.patients[i]
 		btn.text = patient.name
-		#print("Adding button for: ", patient.name)
+		# print("Adding button for: ", patient.name)
 		btn.custom_minimum_size = Vector2(0, 40)
 		btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		btn.theme = button_theme
@@ -186,9 +253,9 @@ func _build_patient_ui() -> void:
 	for i in patient_manager.patients.size():
 		var patient = patient_manager.patients[i]
 		var bg = PATIENT_BACKGROUND.instantiate()
-		#print("Instantiating background for: ", patient.name)
+		# print("Instantiating background for: ", patient.name)
 		if bg.has_method("set_patient"):
-			#print("Calling set_patient for: ", patient.name)
+			# print("Calling set_patient for: ", patient.name)
 			bg.set_patient(patient)
 		else:
 			print("Background has NO set_patient method for: ", patient.name)
@@ -218,6 +285,10 @@ func _on_patient_pressed(index: int, pid: String) -> void: # 13/8 signature upda
 	current_patient_id = pid
 	_ensure_state(pid)
 	# ---------------------------------------------------------------- # 13/8
+
+	# When switching patients, clear search results (keep header).             # 13/8
+	_clear_results_keep_header()
+	_show_placeholder("Please type a term in the search box above")           # 13/8
 
 
 func _show_only_background(index: int) -> void:
