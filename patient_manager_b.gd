@@ -43,7 +43,7 @@ func _on_http_request_request_completed(result, response_code, headers, body) ->
 		return
 	if response_code == 200:
 		var csv_data = body.get_string_from_utf8()
-		print("CSV data received:\n", csv_data)
+		#print("CSV data received:\n", csv_data)
 		_parse_csv(csv_data)
 
 func _request_backup_csv(): #6/8 IF local
@@ -58,14 +58,14 @@ func _parse_csv(csv_text: String) -> void:
 	patients.clear()
 
 	var patient_rows = CsvParser.new().parse(csv_text)
-	print("Parsed patients (parser):", patient_rows)
+	#print("Parsed patients (parser):", patient_rows)
 
 	if patient_rows.size() < 2:
 		print("CSV missing header/data")
 		return
 
 	var headers = patient_rows[0]
-	print("CSV headers found: ", headers)
+	#print("CSV headers found: ", headers)
 
 	for i in range(1, patient_rows.size()):
 		var fields = patient_rows[i]
@@ -82,9 +82,9 @@ func _parse_csv(csv_text: String) -> void:
 		var resp = int(row["RESP"]) if row.has("RESP") and row["RESP"].is_valid_int() else 0
 		var temp = float(row["Temp"]) if row.has("Temp") and row["Temp"].is_valid_float() else 0.0
 
-		print("Patient parsed: Name=%s, Abbr=%s, Disease=%s, AGE=%s" % [
-			row.get("Name", ""), row.get("Abbr", ""), row.get("Disease", ""), row.get("AGE", "")
-		])
+		#print("Patient parsed: Name=%s, Abbr=%s, Disease=%s, AGE=%s" % [
+		#	row.get("Name", ""), row.get("Abbr", ""), row.get("Disease", ""), row.get("AGE", "")
+		#])
 
 		patients.append(Patient.new(
 			row.get("Name", ""),

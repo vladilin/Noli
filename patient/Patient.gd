@@ -12,6 +12,12 @@ var SPO2: int
 var RESP_R: int
 var Temp: float
 
+# --- NEW (Step 1): stable id built from Case_code(=Abbr) and name ---
+var id: String:
+	get:
+		return "%s|%s" % [str(Case_code), str(name)]
+# -------------------------------------------------------------------
+
 func _init(
 	_name: String = "",
 	_Case_code: String = "",
