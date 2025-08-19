@@ -1,0 +1,90 @@
+[gd_scene load_steps=3 format=3 uid="uid://d03fwevbsvqeo"]
+
+[ext_resource type="Theme" uid="uid://fv5ujqb5ywr1" path="res://styles/test_treat_help.tres" id="1_rhl56"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rhl56"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[node name="VBoxContainer" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Tabs" type="HBoxContainer" parent="."]
+z_index = 4
+layout_mode = 2
+theme = ExtResource("1_rhl56")
+theme_override_constants/separation = 5
+
+[node name="test" type="Button" parent="Tabs"]
+layout_mode = 2
+theme = ExtResource("1_rhl56")
+text = "test"
+
+[node name="treat" type="Button" parent="Tabs"]
+layout_mode = 2
+text = "treat"
+
+[node name="help" type="Button" parent="Tabs"]
+layout_mode = 2
+theme = ExtResource("1_rhl56")
+text = "Consult"
+
+[node name="dx" type="Button" parent="Tabs"]
+layout_mode = 2
+text = "Dx"
+
+[node name="PresentBtn" type="Button" parent="Tabs"]
+layout_mode = 2
+text = "present"
+
+[node name="SearchBar" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 18
+
+[node name="Label" type="Label" parent="SearchBar"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "Search"
+
+[node name="searchBox" type="LineEdit" parent="SearchBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_rhl56")
+
+[node name="ResultsRoot" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="ResultsRoot"]
+layout_mode = 2
+
+[node name="DescLabel2" type="Label" parent="ResultsRoot/Header"]
+custom_minimum_size = Vector2(460, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Description"
+autowrap_mode = 3
+
+[node name="TimeLabel2" type="Label" parent="ResultsRoot/Header"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Time"
+
+[node name="ActionButton2" type="Label" parent="ResultsRoot/Header"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Action"
+
+[node name="LogRoot" type="VBoxContainer" parent="."]
+layout_mode = 2

@@ -1,0 +1,319 @@
+[gd_scene load_steps=21 format=3 uid="uid://cbh26n8hy8ks5"]
+
+[ext_resource type="Texture2D" uid="uid://bvvx0kbx2pwbm" path="res://sprites/BACKGROUND.png" id="1_2gn6w"]
+[ext_resource type="Script" uid="uid://bw7nawv5r1mn7" path="res://index.gd" id="1_ir7so"]
+[ext_resource type="Theme" uid="uid://bu4xhjy2de5lw" path="res://styles/new1.0.tres" id="2_3bfj3"]
+[ext_resource type="Theme" uid="uid://fv5ujqb5ywr1" path="res://styles/test_treat_help.tres" id="4_eheuu"]
+[ext_resource type="Script" uid="uid://cgmpk3cl1l8aw" path="res://time/time_system.gd" id="6_2fy20"]
+[ext_resource type="Script" uid="uid://bom0tjxh2xywl" path="res://patient_manager_b.gd" id="7_2fy20"]
+[ext_resource type="Script" uid="uid://b1vsapuleqnq3" path="res://time/date_time.gd" id="7_mvkpm"]
+[ext_resource type="PackedScene" uid="uid://ck2c58key4r5s" path="res://time_ui.tscn" id="8_mvkpm"]
+[ext_resource type="Texture2D" uid="uid://dn8oj27iwovwd" path="res://sprites/button_play.png" id="8_n7lv4"]
+[ext_resource type="Texture2D" uid="uid://dfg50neoue3wb" path="res://sprites/button_on_play.png" id="9_u165g"]
+[ext_resource type="Texture2D" uid="uid://c1syn4j3cuk3k" path="res://sprites/button_FF.png" id="10_t1fqd"]
+[ext_resource type="Texture2D" uid="uid://cp8j8chc22wo4" path="res://sprites/button_on_FF.png" id="11_eheuu"]
+[ext_resource type="Texture2D" uid="uid://b0neboih0ye1e" path="res://sprites/button_skip.png" id="12_t1fqd"]
+[ext_resource type="Texture2D" uid="uid://bmb87iy6r3eff" path="res://sprites/button_on_skip.png" id="13_eheuu"]
+[ext_resource type="StyleBox" uid="uid://c8rj7lcbx1dhg" path="res://styles/patient_background.tres" id="15_o6jxw"]
+[ext_resource type="Script" uid="uid://dq2m0tvuw746a" path="res://actionbuttons/treatment_manager.gd" id="16_lcafn"]
+
+[sub_resource type="GDScript" id="GDScript_ir7so"]
+
+[sub_resource type="Resource" id="Resource_2fy20"]
+script = ExtResource("7_mvkpm")
+year = 2025
+month = 1
+day = 1
+hour = 0
+minute = 0
+second = 0.0
+metadata/_custom_type_script = "uid://b1vsapuleqnq3"
+
+[sub_resource type="GDScript" id="GDScript_d1yoc"]
+script/source = "extends Node
+class_name PatientManagerA
+
+var patients: Array[Patient] = []
+
+func _ready():
+	load_patients_from_csv()
+
+func load_patients_from_csv() -> void:
+	var records = load(\"res://CSV/CS1.csv\").records
+	for row in records:
+		patients.append(Patient.new(
+			row[\"Name\"],         # <-- Must match CSV header
+			row[\"Abbr\"],
+			row[\"Disease\"],
+			row[\"TEXT\"],
+			int(row[\"AGE\"]),
+			row[\"SEX\"],
+			int(row[\"HR\"]),
+			row[\"BP\"],
+			float(row[\"SPO2\"]),
+			int(row[\"RESP\"]),
+			float(row[\"Temp\"])
+		))
+	print(\"Loaded %d patients from CSV!\" % patients.size())
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcafn"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[node name="game_ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ir7so")
+metadata/_edit_horizontal_guides_ = [146.0]
+
+[node name="bg_green" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.313726, 0.203922, 1)
+
+[node name="bg_image" type="TextureRect" parent="bg_green"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.997
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -8.0
+offset_right = 7.62
+offset_bottom = 2.0
+theme = ExtResource("2_3bfj3")
+texture = ExtResource("1_2gn6w")
+expand_mode = 1
+
+[node name="Pt_profile" type="Panel" parent="bg_green"]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 31.0
+offset_right = 315.0
+offset_bottom = 71.0
+
+[node name="pt_list" type="VBoxContainer" parent="bg_green"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 27.0
+offset_top = 171.0
+offset_right = -1272.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 13
+
+[node name="Main_Buttons" type="VBoxContainer" parent="bg_green"]
+z_index = 4
+layout_mode = 0
+offset_left = 604.0
+offset_top = 39.0
+offset_right = 839.0
+offset_bottom = 623.0
+theme = ExtResource("4_eheuu")
+theme_override_constants/separation = 5
+script = SubResource("GDScript_ir7so")
+
+[node name="wait" type="Button" parent="bg_green/Main_Buttons"]
+visible = false
+layout_mode = 2
+text = "wait"
+
+[node name="test" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+theme = ExtResource("4_eheuu")
+text = "test"
+
+[node name="treat" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "treat"
+
+[node name="help" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+theme = ExtResource("4_eheuu")
+text = "Consult"
+
+[node name="dx" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "Dx"
+
+[node name="present" type="Button" parent="bg_green/Main_Buttons"]
+layout_mode = 2
+text = "present"
+
+[node name="TimeSystem" type="Node" parent="."]
+script = ExtResource("6_2fy20")
+date_time = SubResource("Resource_2fy20")
+metadata/_custom_type_script = "uid://cgmpk3cl1l8aw"
+
+[node name="PatientManager" type="Node" parent="."]
+script = SubResource("GDScript_d1yoc")
+
+[node name="PatientManagerB" type="Node" parent="."]
+script = ExtResource("7_2fy20")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="PatientManagerB"]
+
+[node name="Bg_pop_up_panel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 848.0
+offset_top = 31.0
+offset_right = 1507.0
+offset_bottom = 887.0
+theme_override_styles/panel = ExtResource("15_o6jxw")
+
+[node name="MarginContainer" type="MarginContainer" parent="Bg_pop_up_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Bg_pop_up_panel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 18
+
+[node name="Label" type="Label" parent="Bg_pop_up_panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "Search"
+
+[node name="searchBox" type="LineEdit" parent="Bg_pop_up_panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_lcafn")
+
+[node name="MarginContainer2" type="MarginContainer" parent="Bg_pop_up_panel"]
+layout_mode = 2
+offset_left = 20.0
+offset_top = 55.0
+offset_right = 639.0
+offset_bottom = 55.0
+theme_override_constants/margin_top = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Bg_pop_up_panel/MarginContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 17
+
+[node name="header" type="HBoxContainer" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer/header"]
+custom_minimum_size = Vector2(461, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Name of Treatment"
+
+[node name="Label2" type="Label" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer/header"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Time"
+
+[node name="Button" type="Control" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer/header"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="results" type="HBoxContainer" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="timeGUI" parent="CanvasLayer" instance=ExtResource("8_mvkpm")]
+offset_left = 31.0
+offset_top = 12.0
+offset_right = -1393.0
+offset_bottom = -814.0
+scale = Vector2(2.09201, 2.069)
+
+[node name="Play_Button" type="TextureButton" parent="CanvasLayer/timeGUI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.12616
+offset_top = -33.884
+offset_right = 38.1262
+offset_bottom = -3.884
+grow_vertical = 0
+texture_normal = ExtResource("8_n7lv4")
+texture_pressed = ExtResource("9_u165g")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="FF_Button" type="TextureButton" parent="CanvasLayer/timeGUI"]
+clip_contents = true
+custom_minimum_size = Vector2(27, 11)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -15.4572
+offset_top = -34.3673
+offset_right = 14.5428
+offset_bottom = -4.36733
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("10_t1fqd")
+texture_pressed = ExtResource("11_eheuu")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Skip_Button" type="TextureButton" parent="CanvasLayer/timeGUI"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -38.0845
+offset_top = -33.884
+offset_right = -8.0845
+offset_bottom = -3.884
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("12_t1fqd")
+texture_pressed = ExtResource("13_eheuu")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="TreatmentManager" type="Node" parent="."]
+script = ExtResource("16_lcafn")
+
+[connection signal="updated" from="TimeSystem" to="CanvasLayer/timeGUI" method="_on_time_system_updated"]
+[connection signal="request_completed" from="PatientManagerB/HTTPRequest" to="PatientManagerB" method="_on_http_request_request_completed"]
+[connection signal="text_changed" from="Bg_pop_up_panel/MarginContainer/HBoxContainer/searchBox" to="TreatmentManager" method="_on_line_edit_text_changed"]
+[connection signal="pressed" from="CanvasLayer/timeGUI/Play_Button" to="CanvasLayer/timeGUI" method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/timeGUI/FF_Button" to="CanvasLayer/timeGUI" method="_on_ff_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/timeGUI/Skip_Button" to="CanvasLayer/timeGUI" method="_on_skip_button_pressed"]
