@@ -1,41 +1,67 @@
-class_name TimeSystem
+# time_system.gd
+# -----------------------------------------------------------------------------
+# Manages global game time. Keeps track of in-game minutes and seconds,
+# emits signals when time advances.
+# -----------------------------------------------------------------------------
+
 extends Node
+class_name TimeSystem
 
-signal updated(date_time: DateTime)              # Fires every frame
-signal minute_changed(current_minutes: int)      # Fires when minute changes
-signal second_changed(current_seconds: int)      # NEW: Fires when second changes
+# -------------------------------------------------------------------
+# Signals
+# -------------------------------------------------------------------
+signal second_changed(current_time_seconds: int)
+signal minute_changed(current_time_minutes: int)
 
-@export var date_time: DateTime = DateTime.new()
-@export var ticks_pr_second: int = 1  # How many in-game seconds pass per real second
+# -------------------------------------------------------------------
+# Properties
+# -------------------------------------------------------------------
 
-var _last_minute: int = -1
-var _last_second: int = -1
+# Total game time (in seconds since start)
+var current_time_seconds: int = 0
 
+# Speed multiplier: 1 = real time, 2 = twice as fast, etc.
+var time_scale: float = 1.0
+
+# Internal accumulator for delta
+var _accum: float = 0.0
+
+# -------------------------------------------------------------------
+# Process loop
+# -------------------------------------------------------------------
 func _process(delta: float) -> void:
-	# Advance the game time
-	date_time.increase_by_sec(delta * ticks_pr_second)
+	# Scale delta by time_scale (faster/slower time)
+	_accum += delta * time_scale
 
-	# Always tell listeners time changed
-	updated.emit(date_time)
+	# When a full second passes
+	while _accum >= 1.0:
+		_accum -= 1.0
+		current_time_seconds += 1
 
-	# Minute change check
-	var current_minute = date_time.get_minutes_total()
-	if current_minute != _last_minute:
-		_last_minute = current_minute
-		minute_changed.emit(current_minute)
+		# Emit signals
+		second_changed.emit(current_time_seconds)
 
-	# Second change check (NEW)
-	var current_second = date_time.get_seconds_total()
-	if current_second != _last_second:
-		_last_second = current_second
-		second_changed.emit(current_second)
+		if current_time_seconds % 60 == 0:
+			var minutes: int = current_time_seconds / 60
+			minute_changed.emit(minutes)
+
+# -------------------------------------------------------------------
+# Public helpers
+# -------------------------------------------------------------------
+
+func get_current_seconds() -> int:
+	return current_time_seconds
 
 func get_current_minutes() -> int:
-	return date_time.get_minutes_total()
+	return current_time_seconds / 60
 
-func format_time(minutes_total: int = -1) -> String:
-	if minutes_total == -1:
-		return date_time.format_time()
-	var h = minutes_total / 60
-	var m = minutes_total % 60
-	return "%02d:%02d" % [h, m]
+# Returns HH:MM string (24-hour style)
+func format_time(total_minutes: int) -> String:
+	var hours: int = total_minutes / 60
+	var mins: int = total_minutes % 60
+	return "%02d:%02d" % [hours, mins]
+
+# Resets the timer (e.g., for restarting scenarios)
+func reset_time() -> void:
+	current_time_seconds = 0
+	_accum = 0.0

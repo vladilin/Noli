@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cbh26n8hy8ks5"]
+[gd_scene load_steps=20 format=3 uid="uid://cbh26n8hy8ks5"]
 
 [ext_resource type="Texture2D" uid="uid://bvvx0kbx2pwbm" path="res://sprites/BACKGROUND.png" id="1_2gn6w"]
 [ext_resource type="Script" uid="uid://bw7nawv5r1mn7" path="res://index.gd" id="1_ir7so"]
@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://fv5ujqb5ywr1" path="res://styles/test_treat_help.tres" id="4_eheuu"]
 [ext_resource type="Script" uid="uid://cgmpk3cl1l8aw" path="res://time/time_system.gd" id="6_2fy20"]
 [ext_resource type="Script" uid="uid://bom0tjxh2xywl" path="res://patient_manager_b.gd" id="7_2fy20"]
+[ext_resource type="Script" uid="uid://b1vsapuleqnq3" path="res://time/date_time.gd" id="7_mvkpm"]
 [ext_resource type="PackedScene" uid="uid://ck2c58key4r5s" path="res://time_ui.tscn" id="8_mvkpm"]
 [ext_resource type="Texture2D" uid="uid://dn8oj27iwovwd" path="res://sprites/button_play.png" id="8_n7lv4"]
 [ext_resource type="Texture2D" uid="uid://dfg50neoue3wb" path="res://sprites/button_on_play.png" id="9_u165g"]
@@ -17,6 +18,16 @@
 [ext_resource type="Script" uid="uid://dq2m0tvuw746a" path="res://actionbuttons/treatment_manager.gd" id="16_lcafn"]
 
 [sub_resource type="GDScript" id="GDScript_ir7so"]
+
+[sub_resource type="Resource" id="Resource_2fy20"]
+script = ExtResource("7_mvkpm")
+year = 2025
+month = 1
+day = 1
+hour = 0
+minute = 0
+second = 0.0
+metadata/_custom_type_script = "uid://b1vsapuleqnq3"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcafn"]
 bg_color = Color(1, 1, 1, 1)
@@ -121,6 +132,7 @@ text = "present"
 
 [node name="TimeSystem" type="Node" parent="."]
 script = ExtResource("6_2fy20")
+date_time = SubResource("Resource_2fy20")
 metadata/_custom_type_script = "uid://cgmpk3cl1l8aw"
 
 [node name="PatientManagerB" type="Node" parent="."]
@@ -271,6 +283,7 @@ stretch_mode = 4
 [node name="TreatmentManager" type="Node" parent="."]
 script = ExtResource("16_lcafn")
 
+[connection signal="updated" from="TimeSystem" to="CanvasLayer/timeGUI" method="_on_time_system_updated"]
 [connection signal="request_completed" from="PatientManagerB/HTTPRequest" to="PatientManagerB" method="_on_http_request_request_completed"]
 [connection signal="text_changed" from="Bg_pop_up_panel/MarginContainer/HBoxContainer/searchBox" to="TreatmentManager" method="_on_line_edit_text_changed"]
 [connection signal="pressed" from="CanvasLayer/timeGUI/Play_Button" to="CanvasLayer/timeGUI" method="_on_play_button_pressed"]

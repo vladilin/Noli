@@ -1,44 +1,46 @@
+# Patient.gd
+# -----------------------------------------------------------------------------
+# Defines a patient data structure with ID, name, demographics, and vitals.
+# Parsed from CSV by PatientManagerB.
+# -----------------------------------------------------------------------------
+
+extends Resource
 class_name Patient
 
-var name: String
-var Case_code: String
-var Disease: String
-var TEXT: String
-var AGE: int
-var SEX: String
-var HR: int
-var BP: String
-var SPO2: int
-var RESP_R: int
-var Temp: float
-
-# --- NEW (Step 1): stable id built from Case_code(=Abbr) and name ---
-var id: String:
-	get:
-		return "%s|%s" % [str(Case_code), str(name)]
+# -------------------------------------------------------------------
+# Properties
 # -------------------------------------------------------------------
 
-func _init(
-	_name: String = "",
-	_Case_code: String = "",
-	_Disease: String = "",
-	_TEXT: String = "",
-	_AGE: int = 0,
-	_SEX: String = "",
-	_HR: int = 0,
-	_BP: String = "",
-	_SPO2: int = 0,
-	_RESP_R: int = 0,
-	_Temp: float = 0.0
-) -> void:
-	name = _name
-	Case_code = _Case_code
-	Disease = _Disease
-	TEXT = _TEXT
-	AGE = _AGE
-	SEX = _SEX
-	HR = _HR
-	BP = _BP
-	SPO2 = _SPO2
-	RESP_R = _RESP_R
-	Temp = _Temp
+# A unique stable identifier for the patient (e.g. "GI|Wang")
+var id: String = ""
+
+# Basic info
+var name: String = ""
+var age: int = 0
+var sex: String = ""
+
+# Vitals (optional; depends on your CSV)
+var heart_rate: int = 0
+var bp: String = ""            # blood pressure stored as string e.g. "120/80"
+var spo2: int = 0              # oxygen saturation
+var resp_rate: int = 0         # respiratory rate
+
+# Complaint / diagnosis placeholders (will come from CSV later)
+var complaint: String = ""
+var diagnosis: String = ""
+
+# -------------------------------------------------------------------
+# Initializer
+# -------------------------------------------------------------------
+func _init(data: Dictionary = {}) -> void:
+	# If a dictionary is provided (from CSV), map fields
+	if data.has("id"): id = str(data["id"])
+	if data.has("name"): name = str(data["name"])
+	if data.has("age"): age = int(data["age"])
+	if data.has("sex"): sex = str(data["sex"])
+	if data.has("heart_rate"): heart_rate = int(data["heart_rate"])
+	if data.has("bp"): bp = str(data["bp"])
+	if data.has("spo2"): spo2 = int(data["spo2"])
+	if data.has("resp_rate"): resp_rate = int(data["resp_rate"])
+	if data.has("complaint"): complaint = str(data["complaint"])
+	if data.has("diagnosis"): diagnosis = str(data["diagnosis"])

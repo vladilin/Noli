@@ -45,7 +45,7 @@ func _safe_set_label_text(label: Label, raw_value: Variant, label_name: String) 
 
 # -----------------------------------------------------------------------------
 func _ready() -> void:
-	print(VERSION, " | script=", get_script().resource_path)
+	#print(VERSION, " | script=", get_script().resource_path)
 	add_theme_constant_override("separation", 8)
 	desc_label.add_theme_color_override("font_color", Color.BLACK)
 	time_label.add_theme_color_override("font_color", Color.BLACK)
@@ -129,3 +129,34 @@ func _on_action_pressed() -> void:
 			emit_signal("show_results", item)
 		_:
 			emit_signal("action_pressed", item)
+			
+			# Add to your existing SearchRow.gd
+
+# Given a saved order (from PatientState) and the current time in seconds,
+# set labels, colors, countdown, and button text accordingly.
+func apply_order_state(order: Dictionary, now_s: int) -> void:
+	# 1) Texts
+	var item: Dictionary = order.get("item", {})
+	var name_text := str(item.get("name",""))
+	desc_label.text = name_text
+	# We do not show the original "minutes" field once an order exists; countdown only.
+
+	# 2) State -> visuals
+	var state_str: String = str(order.get("state","IDLE"))
+	match state_str:
+		"IN_PROGRESS":
+			var ends_at_s: int = int(order.get("ends_at_s", now_s))
+			state = TreatmentState.IN_PROGRESS
+			action_btn.text = "Apply"     # stays “Apply” while running (or keep blank if you prefer)
+			action_btn.modulate = Color(1,1,0) # yellow
+			end_time_seconds = ends_at_s
+			_on_time_changed_seconds(now_s)    # draw the initial countdown
+		"COMPLETE":
+			state = TreatmentState.COMPLETE
+			action_btn.text = "Results"
+			action_btn.modulate = Color(0,0,1) # blue
+			time_label.text = ""               # no countdown
+		_:
+			state = TreatmentState.IDLE
+			action_btn.text = "Apply"
+			action_btn.modulate = Color(0,1,0) # green
