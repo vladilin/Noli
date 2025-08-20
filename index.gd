@@ -24,9 +24,13 @@ var pt_backgrounds: Array = []
 @onready var treatment_manager: TreatmentManager = $TreatmentManager
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @onready var time_system: TimeSystem = $TimeSystem
 =======
 =======
+=======
+
+>>>>>>> parent of c24c9b7 (working search very happy!)
 
 >>>>>>> parent of c24c9b7 (working search very happy!)
 
@@ -185,6 +189,7 @@ func _ready() -> void:
 	search_box.text_changed.connect(_on_search_box_text_changed)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 # -----------------------------------------------------------------------------
 # Search UI (results_list is ephemeral — safe to clear)
@@ -207,6 +212,8 @@ func display_search_results(results: Array) -> void:
 =======
 =======
 >>>>>>> parent of c24c9b7 (working search very happy!)
+=======
+>>>>>>> parent of c24c9b7 (working search very happy!)
 	
 func _on_search_box_text_changed(new_text):
 	var results = treatment_manager.search_treatments(new_text)
@@ -216,6 +223,9 @@ func display_search_results(results: Array) -> void:
 	print("Displaying results: ", results.size())
 	# Remove old results
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of c24c9b7 (working search very happy!)
+=======
 >>>>>>> parent of c24c9b7 (working search very happy!)
 =======
 >>>>>>> parent of c24c9b7 (working search very happy!)
@@ -225,6 +235,7 @@ func display_search_results(results: Array) -> void:
 	for treatment in results:
 		var row = HBoxContainer.new()
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	for item in results:
@@ -382,6 +393,8 @@ func _on_main_button_pressed() -> void:
 =======
 =======
 >>>>>>> parent of c24c9b7 (working search very happy!)
+=======
+>>>>>>> parent of c24c9b7 (working search very happy!)
 		var name_label = Label.new()
 		name_label.text = treatment["name"]
 		name_label.add_theme_color_override("font_color", Color.BLACK)
@@ -408,7 +421,11 @@ func _on_main_button_pressed(): #this is to make the popup visible
 	if not bg_popup_panel.visible:
 		bg_popup_panel.visible = true
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> parent of c24c9b7 (working search very happy!)
 
 >>>>>>> parent of c24c9b7 (working search very happy!)
 
@@ -533,6 +550,7 @@ func _show_only_background(index: int) -> void:
 		pt_backgrounds[i].visible = (i == index)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 # -----------------------------------------------------------------------------
 # Helpers for the results area (search list only)
@@ -578,6 +596,8 @@ func _on_show_results(item: Dictionary) -> void:
 			var last2 := pt_profile.get_child(pt_profile.get_child_count() - 1)
 			if last2 is Label:
 				(last2 as Label).add_theme_color_override("font_color", Color.SKY_BLUE)
+=======
+>>>>>>> parent of c24c9b7 (working search very happy!)
 =======
 >>>>>>> parent of c24c9b7 (working search very happy!)
 =======
