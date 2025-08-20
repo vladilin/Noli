@@ -1,8 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://b5hw3gj3aqj6h"]
+[gd_scene load_steps=7 format=3 uid="uid://b5hw3gj3aqj6h"]
 
 [ext_resource type="Script" uid="uid://bs5jxg8t4f71p" path="res://patient/patient_background.gd" id="1_dh73m"]
 [ext_resource type="Texture2D" uid="uid://cecdes3xpo374" path="res://art/AC.png" id="1_jm88u"]
 [ext_resource type="StyleBox" uid="uid://c8rj7lcbx1dhg" path="res://styles/patient_background.tres" id="2_5co35"]
+[ext_resource type="Theme" uid="uid://fv5ujqb5ywr1" path="res://styles/test_treat_help.tres" id="4_ofqnq"]
+
+[sub_resource type="GDScript" id="GDScript_gjb6e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ofqnq"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+anti_aliasing = false
 
 [node name="PatientBackground" type="Control"]
 layout_mode = 3
@@ -16,8 +28,9 @@ script = ExtResource("1_dh73m")
 [node name="bg" type="Panel" parent="."]
 z_index = 2
 layout_mode = 0
+offset_top = -17.0
 offset_right = 576.0
-offset_bottom = 889.0
+offset_bottom = 872.0
 theme_override_styles/panel = ExtResource("2_5co35")
 
 [node name="PT_photo" type="TextureRect" parent="bg"]
@@ -28,6 +41,14 @@ offset_right = 176.0
 offset_bottom = 274.0
 texture = ExtResource("1_jm88u")
 
+[node name="Pt_data" type="Label" parent="bg"]
+layout_mode = 0
+offset_left = 191.0
+offset_top = 19.0
+offset_right = 231.0
+offset_bottom = 42.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
 [node name="Case_data" type="RichTextLabel" parent="bg"]
 layout_mode = 0
 offset_left = 14.0
@@ -36,10 +57,114 @@ offset_right = 564.0
 offset_bottom = 865.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 
-[node name="Pt_data" type="Label" parent="bg"]
-layout_mode = 0
-offset_left = 191.0
-offset_top = 19.0
-offset_right = 231.0
-offset_bottom = 42.0
+[node name="Main_Buttons" type="VBoxContainer" parent="."]
+z_index = 4
+offset_left = 326.0
+offset_top = -2.0
+offset_right = 561.0
+offset_bottom = 582.0
+theme = ExtResource("4_ofqnq")
+theme_override_constants/separation = 5
+script = SubResource("GDScript_gjb6e")
+
+[node name="wait" type="Button" parent="Main_Buttons"]
+visible = false
+layout_mode = 2
+text = "wait"
+
+[node name="test" type="Button" parent="Main_Buttons"]
+layout_mode = 2
+theme = ExtResource("4_ofqnq")
+text = "test"
+
+[node name="treat" type="Button" parent="Main_Buttons"]
+layout_mode = 2
+text = "treat"
+
+[node name="help" type="Button" parent="Main_Buttons"]
+layout_mode = 2
+theme = ExtResource("4_ofqnq")
+text = "Consult"
+
+[node name="dx" type="Button" parent="Main_Buttons"]
+layout_mode = 2
+text = "Dx"
+
+[node name="present" type="Button" parent="Main_Buttons"]
+layout_mode = 2
+text = "present"
+
+[node name="Bg_pop_up_panel" type="Panel" parent="."]
+offset_left = 576.0
+offset_top = -17.0
+offset_right = 1235.0
+offset_bottom = 871.0
+theme_override_styles/panel = ExtResource("2_5co35")
+
+[node name="MarginContainer" type="MarginContainer" parent="Bg_pop_up_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+metadata/_edit_lock_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Bg_pop_up_panel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 18
+
+[node name="Label" type="Label" parent="Bg_pop_up_panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "Search"
+
+[node name="searchBox" type="LineEdit" parent="Bg_pop_up_panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_ofqnq")
+
+[node name="MarginContainer2" type="MarginContainer" parent="Bg_pop_up_panel"]
+layout_mode = 2
+offset_left = 20.0
+offset_top = 55.0
+offset_right = 639.0
+offset_bottom = 55.0
+theme_override_constants/margin_top = 24
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Bg_pop_up_panel/MarginContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 17
+
+[node name="header" type="HBoxContainer" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer/header"]
+custom_minimum_size = Vector2(461, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Name of Treatment"
+
+[node name="Label2" type="Label" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer/header"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Time"
+
+[node name="Button" type="Control" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer/header"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="results" type="VBoxContainer" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8

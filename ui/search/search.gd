@@ -45,7 +45,7 @@ func _safe_set_label_text(label: Label, raw_value: Variant, label_name: String) 
 
 # -----------------------------------------------------------------------------
 func _ready() -> void:
-	print(VERSION, " | script=", get_script().resource_path)
+	#print(VERSION, " | script=", get_script().resource_path)
 	add_theme_constant_override("separation", 8)
 	desc_label.add_theme_color_override("font_color", Color.BLACK)
 	time_label.add_theme_color_override("font_color", Color.BLACK)
