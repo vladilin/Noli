@@ -22,7 +22,11 @@ var pt_backgrounds: Array = []
 
 @onready var search_box: LineEdit = $Bg_pop_up_panel/MarginContainer/HBoxContainer/searchBox
 @onready var treatment_manager: TreatmentManager = $TreatmentManager
+<<<<<<< HEAD
 @onready var time_system: TimeSystem = $TimeSystem
+=======
+
+>>>>>>> parent of c24c9b7 (working search very happy!)
 
 const SEARCH_ROW_SCENE: PackedScene = preload("res://ui/search/search.tscn")
 
@@ -175,6 +179,7 @@ func _ready() -> void:
 
 	# Search reacts as you type
 	search_box.text_changed.connect(_on_search_box_text_changed)
+<<<<<<< HEAD
 
 # -----------------------------------------------------------------------------
 # Search UI (results_list is ephemeral — safe to clear)
@@ -194,9 +199,23 @@ func _on_search_box_text_changed(new_text: String) -> void:
 func display_search_results(results: Array) -> void:
 	# Keep header at index 0 in results_list, clear everything else in results_list ONLY.
 	# We DO NOT touch orders_list here — that’s the persistent list.
+=======
+	
+func _on_search_box_text_changed(new_text):
+	var results = treatment_manager.search_treatments(new_text)
+	display_search_results(results)
+
+func display_search_results(results: Array) -> void:
+	print("Displaying results: ", results.size())
+	# Remove old results
+>>>>>>> parent of c24c9b7 (working search very happy!)
 	for i in range(1, results_list.get_child_count()):
 		results_list.get_child(i).queue_free()
+	# Add new results
+	for treatment in results:
+		var row = HBoxContainer.new()
 
+<<<<<<< HEAD
 	for item in results:
 		var row_node: Node = SEARCH_ROW_SCENE.instantiate()
 		results_list.add_child(row_node)
@@ -349,6 +368,34 @@ func _on_main_button_pressed() -> void:
 				_show_placeholder("There are no results for the term you used. Try another keyword.")
 			else:
 				display_search_results(results)
+=======
+		var name_label = Label.new()
+		name_label.text = treatment["name"]
+		name_label.add_theme_color_override("font_color", Color.BLACK)
+		row.add_child(name_label)
+
+		var min_label = Label.new()
+		min_label.text = str(treatment["minutes"]) + " min"
+		min_label.add_theme_color_override("font_color", Color.BLACK)
+		row.add_child(min_label)
+
+		var action_btn = Button.new()
+		action_btn.text = "Do Action"
+		# Attach treatment info or index if you need it later:
+		action_btn.pressed.connect(_on_treatment_action_pressed.bind(treatment))
+		row.add_child(action_btn)
+
+		results_list.add_child(row)
+
+func _on_treatment_action_pressed(treatment):
+	print("Action for treatment: ", treatment["name"])
+	# Here you can call any function you want, or pass the treatment object further.
+	
+func _on_main_button_pressed(): #this is to make the popup visible
+	if not bg_popup_panel.visible:
+		bg_popup_panel.visible = true
+
+>>>>>>> parent of c24c9b7 (working search very happy!)
 
 # -----------------------------------------------------------------------------
 # Build patient list + backgrounds after CSV has loaded
@@ -467,6 +514,7 @@ func _rebuild_orders_ui_for(pid: String) -> void:
 func _show_only_background(index: int) -> void:
 	for i in pt_backgrounds.size():
 		pt_backgrounds[i].visible = (i == index)
+<<<<<<< HEAD
 
 # -----------------------------------------------------------------------------
 # Helpers for the results area (search list only)
@@ -512,3 +560,5 @@ func _on_show_results(item: Dictionary) -> void:
 			var last2 := pt_profile.get_child(pt_profile.get_child_count() - 1)
 			if last2 is Label:
 				(last2 as Label).add_theme_color_override("font_color", Color.SKY_BLUE)
+=======
+>>>>>>> parent of c24c9b7 (working search very happy!)

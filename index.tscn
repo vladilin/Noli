@@ -194,10 +194,11 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Time"
 
-[node name="Button" type="Control" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer/header"]
+[node name="Button" type="Button" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer/header"]
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
+text = "fghgfhgf"
 
 [node name="results" type="VBoxContainer" parent="Bg_pop_up_panel/MarginContainer2/VBoxContainer"]
 layout_mode = 2
